@@ -5,27 +5,28 @@ using WebSocketSharp;
 
 public class WebsocketConnector : MonoBehaviour
 {
+  private WebSocket ws;
+
   // Use this for initialization
   void Start()
   {
     Debug.Log("log message");
-    using (var ws = new WebSocket("ws://echo.websocket.org"))
-    {
-      ws.OnMessage += (sender, e) =>
-        Debug.Log("Echo says: " + e.Data);
+    this.ws = new WebSocket("ws://echo.websocket.org");
 
-      ws.OnOpen += (sender, args) => { Debug.Log("Websocket connected!"); };
+    ws.OnMessage += (sender, e) =>
+      Debug.Log("Echo says: " + e.Data);
 
-      ws.OnError += (sender, args) =>
-        Debug.Log("Error: " + args.Message.ToString());
+    ws.OnOpen += (sender, args) => { Debug.Log("Websocket connected!"); };
 
-      ws.OnClose += (sender, args) =>
-        Debug.Log("Websocket closed because: " + args.Reason.ToString());
+    ws.OnError += (sender, args) =>
+      Debug.Log("Error: " + args.Message.ToString());
 
-      ws.Connect();
-      ws.Send("BALUS");
-      Debug.Log("message sent");
-    }
+    ws.OnClose += (sender, args) =>
+      Debug.Log("Websocket closed because: " + args.Reason.ToString());
+
+    ws.Connect();
+    ws.Send("Foooooo...");
+    Debug.Log("message sent");
   }
 
   // Update is called once per frame
